@@ -24,8 +24,10 @@ import pg from 'pg';
         username: process.env.DB_USER || 'root',
         password: process.env.DB_PASS || '',
         database: process.env.DB_NAME || 'iWant',
-        ssl: true,
         dialectModule: pg,
+        dialectOptions: {
+          ssl: true,
+        },
         autoLoadModels: true,
         models: [Member, Wish, Deliverer],
       }),
