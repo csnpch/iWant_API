@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthenticationController {
   constructor(
     private readonly memberService: MemberService,
-    private jwtService: JwtService,
+    private readonly jwtService: JwtService,
   ) {}
 
   @Post()
