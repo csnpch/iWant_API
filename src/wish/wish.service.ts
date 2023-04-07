@@ -1,26 +1,57 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateWishDto } from './dto/create-wish.dto';
 import { UpdateWishDto } from './dto/update-wish.dto';
+import { Wish } from './wish.model';
 
 @Injectable()
 export class WishService {
-  create(createWishDto: CreateWishDto) {
-    return 'This action adds a new wish';
+  constructor(
+    @InjectModel(Wish)
+    private wishModel: typeof Wish,
+  ) {}
+
+  async create(createWishDto: CreateWishDto) {
+    return await this.wishModel.create({ ...createWishDto });
   }
 
-  findAll() {
-    return `This action returns all wish`;
+  async findAll() {
+    return await this.wishModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} wish`;
+  async findOne(id: number) {
+    return await this.wishModel.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateWishDto: UpdateWishDto) {
-    return `This action updates a #${id} wish`;
+  async findByLocation(location: string) {
+    return await this.wishModel.findAll({
+      where: {
+        location: location,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} wish`;
+  async update(id: number, updateWishDto: UpdateWishDto) {
+    return await this.wishModel.update(
+      { ...updateWishDto },
+      {
+        where: {
+          id,
+        },
+      },
+    );
+  }
+
+  async remove(id: number) {
+    const wish = await this.wishModel.findOne({
+      where: {
+        id,
+      },
+    });
+    return await wish.destroy();
   }
 }

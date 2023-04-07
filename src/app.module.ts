@@ -8,6 +8,9 @@ import { MemberModule } from './member/member.module';
 import { WishModule } from './wish/wish.module';
 import { DelivererModule } from './deliverer/deliverer.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { Member } from './member/member.model';
+import { Wish } from './wish/wish.model';
+import { Deliverer } from './deliverer/deliverer.model';
 
 @Module({
   imports: [
@@ -21,7 +24,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
         password: process.env.DB_PASS || '',
         database: process.env.DB_NAME || 'iWant',
         autoLoadModels: true,
-        models: [],
+        models: [Member, Wish, Deliverer],
       }),
     }),
     MemberModule,
