@@ -19,15 +19,7 @@ import pg from 'pg';
     SequelizeModule.forRootAsync({
       useFactory: () => ({
         dialect: (process.env.DB_TYPE as Dialect) || 'postgres',
-        host: process.env.DB_HOST || 'localhost',
-        port: parseInt(process.env.DB_PORT) || 5432,
-        username: process.env.DB_USER || 'root',
-        password: process.env.DB_PASS || '',
-        database: process.env.DB_NAME || 'iWant',
-        dialectModule: pg,
-        dialectOptions: {
-          ssl: true,
-        },
+        uri: process.env.DB_URI,
         autoLoadModels: true,
         models: [Member, Wish, Deliverer],
       }),
