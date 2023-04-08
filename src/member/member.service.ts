@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { Member } from './member.model';
+import { UpdateTelMemberDto } from './dto/update-tel-member.dto';
 
 @Injectable()
 export class MemberService {
@@ -37,6 +38,12 @@ export class MemberService {
 
   async update(id: number, updateMemberDto: UpdateMemberDto) {
     return await this.memberModel.update(updateMemberDto, {
+      where: { id },
+    });
+  }
+
+  async updateTel(id: number, updateTelMemberDto: UpdateTelMemberDto) {
+    return await this.memberModel.update(updateTelMemberDto, {
       where: { id },
     });
   }

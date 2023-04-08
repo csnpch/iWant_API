@@ -6,11 +6,13 @@ import {
   Param,
   Post,
   Res,
+  UseGuards,
   Version,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { DelivererService } from './deliverer.service';
 import { CreateDelivererDto } from './dto/create-deliverer.dto';
+import { AuthenticationGuard } from 'src/authentication/authentication.guard';
 
 @Controller('deliverer')
 export class DelivererController {
@@ -18,6 +20,7 @@ export class DelivererController {
 
   @Get(':id')
   @Version('1')
+  @UseGuards(AuthenticationGuard)
   async getByWishID(@Param('id') id: number, @Res() res: Response) {
     const deliverer = await this.delivererService.findOne(+id);
     if (!deliverer) {
@@ -36,6 +39,7 @@ export class DelivererController {
 
   @Post()
   @Version('1')
+  @UseGuards(AuthenticationGuard)
   async createPost(
     @Body() createDelivererDto: CreateDelivererDto,
     @Res() res: Response,
@@ -57,6 +61,7 @@ export class DelivererController {
 
   @Delete(':id')
   @Version('1')
+  @UseGuards(AuthenticationGuard)
   async remove(@Param('id') id: number, @Res() res: Response) {
     this.delivererService.remove(+id);
     return res.status(204).json({
