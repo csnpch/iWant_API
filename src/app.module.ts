@@ -25,12 +25,12 @@ import pg from 'pg';
         password: process.env.DB_PASS || '',
         database: process.env.DB_NAME || 'iWant',
         dialectModule: pg,
-        // dialectOptions: {
-        //   ssl: {
-        //     require: true,
-        //     rejectUnauthorized: false,
-        //   },
-        // },
+        dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false,
+          },
+        },
         autoLoadModels: true,
         models: [Member, Wish, Deliverer],
       }),
