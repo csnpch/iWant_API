@@ -5,9 +5,9 @@ export class CreateWishDto {
   title: string;
   @IsNotEmpty()
   location: string;
-  @IsNotEmpty()
+  // @IsNotEmpty()
   description: string;
-  @IsNotEmpty()
+  // @IsNotEmpty()
   benefit: string;
   @IsNotEmpty()
   contact: string;

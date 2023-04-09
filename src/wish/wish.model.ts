@@ -1,4 +1,5 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, HasMany, Model, Table } from 'sequelize-typescript';
+import { Deliverer } from 'src/deliverer/deliverer.model';
 
 @Table({
   tableName: 'tb_wishs',
@@ -25,10 +26,10 @@ export class Wish extends Model {
   contact: string;
 
   @Column
-  deliverer: number;
+  expire: Date;
 
-  @Column
-  accept: boolean;
+  @HasMany(() => Deliverer, 'wish_id')
+  deliverers: Deliverer[];
 
   @Column({ defaultValue: true })
   isActive: boolean;

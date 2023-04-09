@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Deliverer } from './deliverer.model';
-import { CreateDelivererDto } from './dto/create-deliverer.dto';
 import { UpdateDelivererDto } from './dto/update-deliverer.dto';
+import { Member } from 'src/member/member.model';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class DelivererService {
@@ -11,8 +12,11 @@ export class DelivererService {
     private delivererModel: typeof Deliverer,
   ) {}
 
-  async create(createDelivererDto: CreateDelivererDto) {
-    return await this.delivererModel.create({ ...createDelivererDto });
+  async create(idmember: string, idwish: string) {
+    return await this.delivererModel.create({
+      member_id: idmember,
+      wish_id: idwish,
+    });
   }
 
   async findAll() {
@@ -23,6 +27,19 @@ export class DelivererService {
     return await this.delivererModel.findOne({
       where: {
         id,
+      },
+    });
+  }
+
+  async findAllByWishJoinMember(id: number) {
+    return await this.delivererModel.findAll({
+      include: [
+        {
+          model: Member,
+        },
+      ],
+      where: {
+        wish_id: id,
       },
     });
   }

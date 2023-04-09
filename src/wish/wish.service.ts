@@ -13,8 +13,11 @@ export class WishService {
   ) {}
 
   async create(id: string, createWishDto: CreateWishDto) {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
     return await this.wishModel.create({
       member_id: id,
+      expire: date,
       ...createWishDto,
     });
   }
@@ -41,12 +44,9 @@ export class WishService {
     });
   }
 
-  async findByLocationAndNotMe(location: string, id: string) {
+  async findNotMe(id: string) {
     return await this.wishModel.findAll({
       where: {
-        location: {
-          [Op.like]: `%${location}%`,
-        },
         member_id: {
           [Op.not]: id,
         },
@@ -68,6 +68,20 @@ export class WishService {
       {
         where: {
           id,
+        },
+      },
+    );
+  }
+
+  async updateExpire(id: number, idMember: string, date: Date) {
+    return await this.wishModel.update(
+      {
+        expire: date,
+      },
+      {
+        where: {
+          id: id,
+          member_id: idMember,
         },
       },
     );

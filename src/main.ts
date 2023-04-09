@@ -5,6 +5,7 @@ import * as compression from 'compression';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  process.env.TZ = 'Asia/Bangkok';
   const app = await NestFactory.create(AppModule);
   app.enableVersioning({
     type: VersioningType.HEADER,

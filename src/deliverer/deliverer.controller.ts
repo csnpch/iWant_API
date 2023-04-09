@@ -1,5 +1,5 @@
 import {
-  Body,
+  Headers,
   Controller,
   Delete,
   Get,
@@ -11,12 +11,15 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { DelivererService } from './deliverer.service';
-import { CreateDelivererDto } from './dto/create-deliverer.dto';
 import { AuthenticationGuard } from 'src/authentication/authentication.guard';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('deliverer')
 export class DelivererController {
-  constructor(private readonly delivererService: DelivererService) {}
+  constructor(
+    private readonly delivererService: DelivererService,
+    private jwtService: JwtService,
+  ) {}
 
   @Get(':id')
   @Version('1')
@@ -37,25 +40,26 @@ export class DelivererController {
     });
   }
 
-  @Post()
+  @Post(':id')
   @Version('1')
   @UseGuards(AuthenticationGuard)
   async createPost(
-    @Body() createDelivererDto: CreateDelivererDto,
     @Res() res: Response,
+    @Headers() headers,
+    @Param('id') idWish: string,
   ) {
-    const deliverer = await this.delivererService.create(createDelivererDto);
+    const token = headers.authorization.split(' ')[1];
+    const idMember = (await this.jwtService.decode(token))['id'];
+    const deliverer = await this.delivererService.create(idMember, idWish);
     if (!deliverer) {
       return res.status(500).json({
         status: false,
         message: "can't create deliverer",
-        data: null,
       });
     }
     return res.status(201).json({
       status: true,
       message: 'create deliverer success',
-      data: deliverer,
     });
   }
 

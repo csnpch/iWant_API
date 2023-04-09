@@ -1,4 +1,5 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, HasMany, Model, Table } from 'sequelize-typescript';
+import { Deliverer } from 'src/deliverer/deliverer.model';
 
 @Table({
   tableName: 'tb_members',
@@ -23,4 +24,7 @@ export class Member extends Model {
 
   @Column({ defaultValue: true })
   isActive: boolean;
+
+  @HasMany(() => Deliverer, 'member_id')
+  deliverers: Deliverer[];
 }

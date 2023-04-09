@@ -32,6 +32,7 @@ import pg from 'pg';
           },
         },
         autoLoadModels: true,
+        synchronize: true,
         models: [Member, Wish, Deliverer],
       }),
     }),

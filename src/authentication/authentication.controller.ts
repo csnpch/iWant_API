@@ -24,7 +24,7 @@ export class AuthenticationController {
         tel: loginDto.tel,
         email: loginDto.email,
       };
-      const status = this.memberService.create(createMemberDto);
+      const status = await this.memberService.create(createMemberDto);
       if (!status) {
         return res.status(500).json({
           status: false,
