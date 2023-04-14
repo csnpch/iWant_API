@@ -1,11 +1,15 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class UpdateMemberDto {
+export class LoginDto {
   @IsNotEmpty()
-  fullName: string;
+  userID: string;
 
   @IsNotEmpty()
-  tel: string;
+  authType: string;
+
   @IsNotEmpty()
+  fullname: string;
+
+  tel: string;
   email: string;
 }

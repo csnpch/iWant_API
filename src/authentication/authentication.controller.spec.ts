@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { MemberService } from 'src/member/member.service';
 import { AuthenticationController } from './authentication.controller';
-import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationController', () => {
   let controller: AuthenticationController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [MemberService],
       controllers: [AuthenticationController],
-      providers: [AuthenticationService],
     }).compile();
 
     controller = module.get<AuthenticationController>(AuthenticationController);

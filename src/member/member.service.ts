@@ -1,26 +1,59 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
+import { Member } from './member.model';
+import { UpdateTelMemberDto } from './dto/update-tel-member.dto';
 
 @Injectable()
 export class MemberService {
-  create(createMemberDto: CreateMemberDto) {
-    return 'This action adds a new member';
+  constructor(
+    @InjectModel(Member)
+    private memberModel: typeof Member,
+  ) {}
+
+  async findByToken(token: string) {
+    return await this.memberModel.findOne({
+      where: {
+        token: token,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all member`;
+  async create(createMemberDto: CreateMemberDto) {
+    return await this.memberModel.create({ ...createMemberDto });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} member`;
+  async findAll() {
+    return await this.memberModel.findAll();
   }
 
-  update(id: number, updateMemberDto: UpdateMemberDto) {
-    return `This action updates a #${id} member`;
+  async findOne(id: number) {
+    return await this.memberModel.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} member`;
+  async update(id: number, updateMemberDto: UpdateMemberDto) {
+    return await this.memberModel.update(updateMemberDto, {
+      where: { id },
+    });
+  }
+
+  async updateTel(id: number, updateTelMemberDto: UpdateTelMemberDto) {
+    return await this.memberModel.update(updateTelMemberDto, {
+      where: { id },
+    });
+  }
+
+  async remove(id: number) {
+    const member = await this.memberModel.findOne({
+      where: {
+        id,
+      },
+    });
+    return await member.destroy();
   }
 }
